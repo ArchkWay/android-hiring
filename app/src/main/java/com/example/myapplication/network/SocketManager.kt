@@ -1,6 +1,8 @@
 package com.example.myapplication.network
 
 import android.util.Log
+import com.example.myapplication.network.ServerResponse.Success
+import com.google.gson.Gson
 import java.io.DataInputStream
 import java.net.Socket
 import java.nio.ByteBuffer
@@ -19,8 +21,20 @@ class SocketManager(
         Log.d(TAG, "connected: ${socket?.isConnected}")
     }
 
+    fun sendRequest(user: TestRequest): ServerResponse {
+        return try {
+            connect()
+            send(user)
+            return Gson().fromJson(receive(), Success::class.java)
+        } catch (e: Throwable) {
+            ServerResponse.Error(e.message ?: "Any error")
+        } finally {
+            close()
+        }
+    }
+
     fun send(request: TestRequest) {
-        val message = "{ request }" // <- request
+        val message = Gson().toJson(request)
 
         Log.i(TAG, "sending: $message")
 
@@ -33,7 +47,7 @@ class SocketManager(
         outputStream?.flush()
     }
 
-    fun receive(): TestResponse {
+    fun receive(): String {
         val inputStream = DataInputStream(socket?.getInputStream())
 
         val lengthBytes = ByteArray(4)
@@ -45,9 +59,10 @@ class SocketManager(
         val message = String(buffer, 0, length)
 
         Log.d(TAG, "received: $message")
-
-        return TestResponse(false) // <- message
+        return message
     }
+
+
 
     fun close() {
         socket?.close()

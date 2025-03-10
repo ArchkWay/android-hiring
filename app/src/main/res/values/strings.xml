@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="send">Отправить</string>>
+    <string name="hi_username">Привет, Username</string>
+    <string name="describe_yourself">Расскажи о себе.\n Это необходимо, чтобы подбирать \nпартнёров за столом</string>
+    <string name="sex">Пол:</string>
+    <string name="continue_">Продолжить</string>
+    <string name="age">Возраст:</string>
+    <string name="female">Женский пол</string>
+    <string name="male">Мужской пол</string>
+    <string name="female_code">f</string>
+    <string name="male_code">m</string>
+    <string name="empty_age">__</string>
+    <string name="success">Успех %1$s</string>
 </resources>
